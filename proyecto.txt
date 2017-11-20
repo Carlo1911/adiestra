@@ -1,0 +1,68 @@
+Proyecto "Banco"
+
+
+REQUERIMIENTOS
+
+Escribir una aplicación web empleando Django 1.11 que reproduzca las funcionalidades
+básicas de una plataforma de banca electrónica con las siguientes características:
+
+Deberá empezar implementando el modelo Cliente con datos como:
+    -apellido paterno
+    -apellido materno
+    -nombres
+    -género
+    -fecha de nacimiento
+    -dirección
+    -departamento
+    -provincia
+    -distrito
+    -tipo de documento
+    -número de documento
+    -fecha y hora de afiliación.
+
+La combinación de tipo de documento y número de documento debe ser única.
+
+El modelo Cliente también deberá permitir adjuntar una imagen con la firma del cliente.
+
+En el caso de DNI se deberá validar que a través de una expresión regular que cumpla
+con estar compuesto por exactamente 8 dígitos decimales aceptando cero a la izquierda.
+
+Cada Cliente deberá asociarse de manera única a un usuario del modelo django.contrib.auth.model.User.
+
+Implementar el modelo Cuenta de forma que
+cada cuenta tenga una llave primaria autonuméricapero además
+un número de cuenta único generado automáticamente con la forma NNN-NNNNNNNNNN es decir,
+tres dígitos decimales seguidos por un guión y luego 10 dígitos decimales,
+una moneda asociada (soles ó dólares)
+un saldo actual
+un costo de mantenimiento mensual que por omisión es cero
+desde luego un titular que es un modelo Cliente.
+Las cuentas están activas mientras tengan un valor nulo en el campo fecha_anulacion
+que también deberá estar presente en el modelo.
+
+Implementar el modelo Tarjeta que tiene
+un número único de 16 dígitos decimales
+comenzando siempre por el número 4
+un mes y año de expiración elegido aleatoriamente entre un rango
+no menor de 24 meses y no mayor de 80 meses a partir de la fecha de creación de la tarjeta
+un número de verificación CVV formado por tres dígitos decimales aleatorios de forma que el primero no sea cero.
+Adicionalmente, habrá un campo boolean anulada que indique el estado de vigencia de la tarjeta
+otro boolean adicional bloqueada que indica si la tarjeta se encuentra temporalmente bloqueda.
+Finalmente, cada tarjeta tiene un PIN (número de identificación personal) de 4 dígitos decimales generados aleatoriamente.
+El número de tarjeta generado debe cumplir con el algoritmo
+“Mod 10” descrito en el siguiente artículo: http://ricardogeek.com/como-validar-tarjetas-de-credito/
+
+Cada cliente  podrá tener tantas cuentas en soles y dólares como desee pero cada tarjeta solo podrá estar asociada a un máximo de una sola cuenta de soles y/o una sola cuenta de dólares verificando previamente que dicha cuenta NO se encuentre asociada a otra tarjeta.
+
+Deberá implementar una pantalla de login basada en el número de tarjeta y el PIN, idealmente creado un backend de autenticación especializado de Django y reusando las vistas de login de la aplicación django.contrib.auth.
+
+La pantalla de login deberá presentar un “teclado numérico virtual” con 10 botones mostrados aleatoriamente de forma que el PIN se ingrese presionando en esos botones y no escribiendo en un cuadro de texto.
+Si la tarjeta se encuentra anulada ó bloqueada NO es posible iniciar sesión asi los datos de número de cuenta y PIN coincidan.
+Una vez iniciada la sesión se mostrará un “dashboard” o pantalla de bienvenida con la fecha actual, el nombre completo del usuario y un listado de las cuentas asociadas disponibles como un hipervínculo en el campo número de cuenta, pero mostrando también el tipo de moneda, el saldo y la fecha de la última operación.
+Al seleccionar una de las cuentas se podrá ver un listado con todas operaciones hechas con esa cuenta en orden cronológico inverso, es decir, de la más reciente a la más antigua.
+Crear el modelo Operacion que siempre tiene una cuenta de origen, una cuenta de destino, un tipo de operación que solo puede ser de tipo TRANSFERENCIA  o MANTENIMIENTO, un monto y finalmente la fecha y hora en que se llevó acabo.
+En el dashboard también existirá un hipervínculo a un formulario para hacer transferencias el cuál a través de un menú ó de otra pantalla permitirá escoger si se trata de una transferencia entre cuentas propias ó hacia una cuenta de un tercero.
+La pantalla para hacer una transferencia entre cuentas propias presentará un combo box con las cuentas del cliente para que se escoja la cuenta de origen, otro combo box con la cuenta de destino (que debe ser distinta) y un cuadro de texto para indicar el monto. En caso de que la moneda sea distinta hacer la conversión aplicando un tipo de cambio entre soles y dólares definido en la variable TIPO_CAMBIO_DOLAR del archivo settings.py del proyecto que deberá tener un valor por omisión de 3.22 soles por un dólar. Al completarse los datos, de existir saldo suficiente se llevará a cambo la transferencia de manera atómica como parte de una misma transacción.
+La pantalla para una transferencia hacia cuentas de terceros presentará un combo box para escoger la cuenta de origen y un cuadro de texto para colocar el número de cuenta del terco. Empleando eventos de Javascript y AJAX se deberá consultar a un endpoint por el nombre del titular de la cuenta y el mismo deberá aparecer al costado del recuadro de texto con el número de cuenta. Adicionalmente se solicitará el monto a transferir, se hará la conversión si el tipo de moneda es distinto y se realizará la transferencia de forma atómica como para de una misma transacción.
+Al momento de intentar hacer una transferencia a terceros se enviará un correo con un número aleatorio de 6 dígitos decimales al titular de la cuenta de forma que solo se complete la transacción si coloca el número correcto en el recuadro de texto llamado “código de verificación”.
+Extender el comando manage.py con un nuevo comando que permita realizar los cobros de mantenimiento de cada cuenta al final de cada mes. El propio banco tendrá una cuenta indicada en settings.py como CUENTA_BANCO hacia donde se transfieren los cobros por mantenimiento.
