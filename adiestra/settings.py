@@ -52,8 +52,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'adiestra.urls'
 
-AUTHENTICATION_BACKENDS = ['adiestra.backend.MyCustomBackend']
-
 
 TEMPLATES = [
     {

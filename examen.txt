@@ -6,7 +6,8 @@ X Implementar una sola vista que se muestre en el url "/jugadas/" que muestre en
 X Las jugadas de "La Tinka" están compuestas por 6 bolillas de números entre 1 y 45 en donde los números NO se pueden repetir.
 X Mostrar los números en orden ascendente y con un cero a la izquierda unidos por guiones. Ej 04-18-32-39-45
 X El número de jugadas distintas a generar se debe leer del archivo settings.py del proyecto importándolo con "from django.conf import settings".
-Adicionalmente, deberá implementar un decorador que verifique si el usuario ha iniciado sesión y solo muestre las jugadas en caso de que el usuario haya iniciado sesión. 
+Adicionalmente, deberá implementar un decorador que verifique si el usuario ha iniciado sesión y
+solo muestre las jugadas en caso de que el usuario haya iniciado sesión.
 Si el usuario NO ha iniciado sesión redirigirlo al login del admin en "/admin/".
 
 
