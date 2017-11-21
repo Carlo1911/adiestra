@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+Jugadas
+{% endblock  %}
+
+{% block content %}
+<table style="width:100%">
+    {% for jugada in jugadas %}
+    <tr>
+      <th>{{jugada}}</th>
+    </tr>
+    {% endfor %}
+  </table> 
+    
+{% endblock  %}

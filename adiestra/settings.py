@@ -26,6 +26,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+NUMERO_JUGADAS = 6
 
 # Application definition
 
