@@ -6,6 +6,7 @@ from .decorators import user_is_authenticated
 
 class Index(TemplateView):
     template_name = 'jugadas.html'
+    request = None
 
     def get_context_data(self, **kwargs):
         context = super(Index, self).get_context_data(**kwargs)
@@ -17,8 +18,7 @@ class Index(TemplateView):
 
     @user_is_authenticated
     def get(self, request, *args, **kwargs):
-        if request.user:
-            print(request.user)
+        self.request = request
         return super(Index, self).get(request, *args, **kwargs)
 
 
