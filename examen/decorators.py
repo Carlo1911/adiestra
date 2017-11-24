@@ -2,11 +2,11 @@ from functools import wraps
 from django.shortcuts import redirect
 
 
-def user_is_authenticated(function):
+def esta_logueado(function):
     @wraps(function)
-    def decorator(request, *args, **kwargs):
+    def decorador(request, *args, **kwargs):
         if request.request.user.is_authenticated():
             return function(request, *args, **kwargs)
         else:
             return redirect('admin:index')
-    return decorator
+    return decorador

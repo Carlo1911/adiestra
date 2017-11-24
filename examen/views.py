@@ -1,7 +1,7 @@
 from random import randint
 from django.conf import settings
 from django.views.generic.base import TemplateView
-from .decorators import user_is_authenticated
+from .decorators import esta_logueado
 
 
 class Index(TemplateView):
@@ -12,17 +12,17 @@ class Index(TemplateView):
         context = super(Index, self).get_context_data(**kwargs)
         jugadas = []
         for i in range(settings.NUMERO_JUGADAS):
-            jugadas.append(generar_jugada())
+            jugadas.append(genera_jugada())
         context = {'jugadas': jugadas}
         return context
 
-    @user_is_authenticated
+    @esta_logueado
     def get(self, request, *args, **kwargs):
         self.request = request
         return super(Index, self).get(request, *args, **kwargs)
 
 
-def generar_jugada():
+def genera_jugada():
     numeros = []
     while(len(numeros) < 6):
         numero = str(randint(0, 45)).zfill(2)

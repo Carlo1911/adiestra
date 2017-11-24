@@ -5,12 +5,31 @@ Jugadas
 {% endblock  %}
 
 {% block content %}
-<table style="width:100%">
-    {% for jugada in jugadas %}
-    <tr>
-      <th>{{jugada}}</th>
-    </tr>
-    {% endfor %}
-  </table> 
+
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+        <div class="panel">
+        <div class="panel-heading">Jugadas de la tinka</div>
+        <div class="table-responsive">
+            <table class="table table-hover manage-u-table">
+                <thead>
+                    <tr>
+                        <th>Número</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for jugada in jugadas %}
+                    <tr>
+                        <td><span class="font-medium">{{ jugada }}</span>
+                            <br/><span class="text-muted">Ganadora</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+</div>
     
 {% endblock  %}
